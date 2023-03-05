@@ -1,4 +1,5 @@
 import { Footer, Header, TodoCollection, TodoInput } from 'components';
+import { useState } from 'react'
 
 const dummyTodos = [
   {
@@ -24,13 +25,122 @@ const dummyTodos = [
 ];
 
 const TodoPage = () => {
+  const [inputValue, setInputValue] = useState('')
+  const [todos, setTodos] = useState(dummyTodos);
+
+  const handleInput = (value) => {
+    setInputValue(value);
+  };
+
+  const handleTodo = () => {
+    if (inputValue.length === 0) {
+      return;
+    }
+    setTodos((prevTodos) => {
+      return [
+        ...prevTodos,
+        {
+          id: Math.random() * 100,
+          title: inputValue,
+          isDone: false,
+        },
+      ];
+    });
+    setInputValue('');
+  };
+
+  const handleKeyDown = () => {
+    if (inputValue.length === 0) {
+      return;
+    }
+    setTodos((prevTodos) => {
+      return [
+        ...prevTodos,
+        {
+          id: Math.random() * 100,
+          title: inputValue,
+          isDone: false,
+        },
+      ];
+    });
+    setInputValue('');
+  }
+
+  const handleToggleDone = (id) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map((todo) => {
+        if(todo.id === id) {
+          return {
+            ...todo,
+            isDone: !todo.isDone,
+          }
+        }
+        return todo
+      })
+    })
+  }
+
+  const handleChangeMode = ({ id, isEdit }) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map((todo) => {
+        if(todo.id === id ){
+          return {
+            ...todo,
+            isEdit,
+          }
+        }
+        return{
+          ...todo,
+          isEdit: false
+        }
+      })
+    })
+  }
+
+  const handleSave = ({id, title}) => {
+    setTodos((prevTodos) => {
+      return prevTodos.map(todo => {
+        if(todo.id === id){
+          return{
+            ...prevTodos,
+            id,
+            title,
+            isEdit: false
+          }
+        }
+        return {...todo, isEdit: false}
+      })
+    })
+  }
+
+  const handleDelete = (id) => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter(todo => {
+        return todo.id !== id
+      })
+    })
+  }
+
+  const count = todos.length;
+
   return (
     <div>
       TodoPage
       <Header />
-      <TodoInput />
-      <TodoCollection />
-      <Footer />
+      <TodoInput
+        inputValue={inputValue}
+        onChange={handleInput}
+        onAddTodo={handleTodo}
+        onKeyDown={handleKeyDown}
+      />
+      <TodoCollection
+        todos={todos}
+        onToggleDone={handleToggleDone}
+        onChangeMode={handleChangeMode}
+        onSave={handleSave}
+        onDelete={handleDelete}
+      />
+      <Footer count={count}/>
     </div>
   );
 };
