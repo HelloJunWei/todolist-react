@@ -1,7 +1,7 @@
 
 # todolist-react
 
-##網頁畫面
+## 網頁畫面
 ![Todo頁面](https://github.com/Ai-Chen-Hsieh/todolist-react/blob/main/src/assets/images/todo_pic.png)
 
 ## 功能
