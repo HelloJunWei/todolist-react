@@ -30,4 +30,4 @@ npm install
 npm start
 ```
 4.至 http://localhost:3000 開始使用
->>>>>>> f6987936ecc28e1ad29f6b7275cbeeea4b0d614d
+
